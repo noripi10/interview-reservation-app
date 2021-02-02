@@ -1,10 +1,23 @@
 import React from 'react';
 import ReactCalendar from 'react-calendar';
+import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
 import { useRecoilState } from 'recoil';
 import { inputState } from '../store/store';
 
+const useStyles = makeStyles((theme) => ({
+  calendar: {
+    backgroundColor: '#fff',
+  },
+  calendarTile: {
+    borderWidth: 0.5,
+    borderColor: '#000',
+    width: '300px',
+  },
+}));
+
 export const Calendar = React.memo(({ targetList }) => {
+  const classes = useStyles();
   const [inputItem, setInputItem] = useRecoilState(inputState);
 
   const getTileContent = ({ date, view }) => {
@@ -20,6 +33,8 @@ export const Calendar = React.memo(({ targetList }) => {
   return (
     <ReactCalendar
       locale='ja-JP'
+      calendarType='US'
+      className={classes.calendar}
       value={inputItem.date && moment(inputItem.date).toDate()}
       onClickDay={(date) =>
         setInputItem((item) => ({
@@ -27,9 +42,10 @@ export const Calendar = React.memo(({ targetList }) => {
           date: moment(date).format('YYYY/MM/DD (ddd)'),
         }))
       }
+      tileClassName={classes.calendarTile}
       tileContent={getTileContent}
       showDoubleView={false}
-      minDetail={'month'}
+      minDetail={'year'}
     />
   );
 });

@@ -12,8 +12,9 @@ import { Divider } from '@material-ui/core';
 const products = [
   { name: '希望日', desc: '', value: 'date' },
   { name: '希望時間', desc: '', value: 'timeLabel' },
-  { name: 'お名前', desc: '', value: 'name' },
-  { name: 'メールアドレス', desc: '', value: 'address' },
+  { name: '氏名', desc: '', value: 'name' },
+  { name: 'ひらがな', desc: '', value: 'kanaName' },
+  { name: 'メールアドレス', desc: '', value: 'mailAddress' },
   { name: '電話番号', desc: '', value: 'tel' },
 ];
 
@@ -40,22 +41,15 @@ export default function Review() {
       </Typography> */}
       <List disablePadding>
         {products.map((product) => (
-          <>
+          <React.Fragment key={product.name}>
             <ListItem className={classes.listItem} key={product.name}>
               <ListItemText primary={product.name} secondary={''} />
-
-              {product.value !== 'name' ? (
-                <Typography variant='body2'>
-                  {inputItem[product.value]}
-                </Typography>
-              ) : (
-                <Typography variant='body2'>
-                  {inputItem.lastName} {inputItem.firstName}
-                </Typography>
-              )}
+              <Typography variant='body2'>
+                {inputItem[product.value]}
+              </Typography>
             </ListItem>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
       </List>
       <Grid container spacing={2}></Grid>

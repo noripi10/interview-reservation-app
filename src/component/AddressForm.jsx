@@ -43,7 +43,7 @@ export default function AddressForm() {
   const [inputItem, setInputItem] = useRecoilState(inputState);
 
   return (
-    <React.Fragment>
+    <>
       <Typography gutterBottom>・カレンダーから日付を選択して下さい</Typography>
       <div style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
         <Calendar targetList={targetList} />
@@ -104,43 +104,43 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id='lastName'
-            name='lastName'
-            label='姓'
+            id='name'
+            name='name'
+            label='氏名'
             fullWidth
             color='secondary'
             value={inputItem.lastName}
             onChange={(e) => {
               console.log(e.target.value);
-              setInputItem((item) => ({ ...item, lastName: e.target.value }));
+              setInputItem((item) => ({ ...item, name: e.target.value }));
             }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id='firstName'
-            name='firstName'
-            label='名'
+            id='kanaName'
+            name='kanaName'
+            label='ひらがな'
             fullWidth
             color='secondary'
             value={inputItem.firstName}
             onChange={(e) =>
-              setInputItem((item) => ({ ...item, firstName: e.target.value }))
+              setInputItem((item) => ({ ...item, kanaName: e.target.value }))
             }
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             required
-            id='address'
-            name='address'
+            id='mailAddress'
+            name='mailAddress'
             label='メールアドレス'
             fullWidth
             color='secondary'
             value={inputItem.address}
             onChange={(e) =>
-              setInputItem((item) => ({ ...item, address: e.target.value }))
+              setInputItem((item) => ({ ...item, mailAddress: e.target.value }))
             }
             // helperText='メールアドレスを正しく入力してください'
           />
@@ -159,6 +159,6 @@ export default function AddressForm() {
           />
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   );
 }
