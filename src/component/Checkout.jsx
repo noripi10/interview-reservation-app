@@ -16,6 +16,7 @@ import { CheckCircle } from '@material-ui/icons';
 
 import AddressForm from './AddressForm';
 import Review from './Review';
+import Confirm from './Confirm';
 
 const baseColor = '#D0101B';
 
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   },
   layout: {
     width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
       marginLeft: 'auto',
@@ -76,6 +77,8 @@ const getStepContent = (step) => {
       return <AddressForm />;
     case 1:
       return <Review />;
+    case 2:
+      return <Confirm />;
     default:
       throw new Error('Unknown step');
   }
@@ -89,13 +92,13 @@ const numberComponent = (num, active) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 20,
-        width: 20,
+        height: 25,
+        width: 25,
         backgroundColor: active ? baseColor : '#ddd',
-        borderRadius: 20,
+        borderRadius: 25,
       }}
     >
-      <span style={{ color: textColor, fontSize: 8, margin: 0, padding: 0 }}>
+      <span style={{ color: textColor, fontSize: 12, margin: 0, padding: 0 }}>
         {num}
       </span>
     </div>
@@ -107,7 +110,7 @@ const stepIconComponent = (props) => {
   return (
     <div>
       {completed ? (
-        <CheckCircle style={{ color: baseColor }} />
+        <CheckCircle style={{ color: baseColor, fontSize: 30 }} />
       ) : (
         numberComponent(icon, active)
       )}
@@ -159,7 +162,7 @@ export default function Checkout(props) {
       </ElevationScroll>
       <div className={classes.layout}>
         <Paper className={classes.paper}>
-          <Typography component='h1' variant='h4' align='center'>
+          <Typography component='h1' variant='h5' align='center'>
             {steps[activeStep]}
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
@@ -173,32 +176,18 @@ export default function Checkout(props) {
           </Stepper>
           <>
             {activeStep === steps.length ? (
-              <>
-                <Typography variant='h6' gutterBottom>
-                  面接のご予約ありがとうございました。
-                </Typography>
-                <Typography variant='subtitle1'>
-                  弊社／人事担当者よりご入力いただいたメールアドレスに
-                  <br />
-                  日程調整等の詳細な情報をご返信させていただきます。
-                </Typography>
-                <Typography component='span'>
-                  ご予約のキャンセル依頼またはご不明点ございましたら、
-                  <br />
-                  下記の電話番号までお問い合わせください。
-                </Typography>
-              </>
+              <Confirm />
             ) : (
               <>
                 {getStepContent(activeStep)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button
+                      variant='outlined'
                       onClick={handleBack}
                       className={classes.button}
-                      color='default'
                     >
-                      訂正
+                      戻る
                     </Button>
                   )}
                   <Button

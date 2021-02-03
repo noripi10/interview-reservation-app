@@ -9,11 +9,6 @@ const useStyles = makeStyles((theme) => ({
   calendar: {
     backgroundColor: '#fff',
   },
-  calendarTile: {
-    borderWidth: 0.5,
-    borderColor: '#000',
-    width: '300px',
-  },
 }));
 
 export const Calendar = React.memo(({ targetList }) => {
@@ -23,11 +18,22 @@ export const Calendar = React.memo(({ targetList }) => {
   const getTileContent = ({ date, view }) => {
     return (
       <div>
-        <span style={{ fontFamily: 'sans-serif' }}>
-          {targetList.some((v) => v === moment(date).format('D')) ? '○' : '　'}
+        <span className='tile-content'>
+          {targetList.some((v) => v === moment(date).format('D')) ? '2' : '　'}
         </span>
       </div>
     );
+  };
+
+  const getTIleClassName = ({ activeStartDate, date, view }) => {
+    let className = 'calendar-tile';
+    if (view === 'month' && date.getDay() === 6) {
+      className += ' saturday';
+    }
+    if (!targetList.some((v) => v === moment(date).format('D'))) {
+      className += ' tile-disable';
+    }
+    return className;
   };
 
   return (
@@ -35,6 +41,10 @@ export const Calendar = React.memo(({ targetList }) => {
       locale='ja-JP'
       calendarType='US'
       className={classes.calendar}
+      prevLabel={'<'}
+      prev2Label={'<<'}
+      nextLabel={'>'}
+      next2Label={'>>'}
       value={inputItem.date && moment(inputItem.date).toDate()}
       onClickDay={(date) =>
         setInputItem((item) => ({
@@ -42,7 +52,8 @@ export const Calendar = React.memo(({ targetList }) => {
           date: moment(date).format('YYYY/MM/DD (ddd)'),
         }))
       }
-      tileClassName={classes.calendarTile}
+      // tileClassName={classes.calendarTile}
+      tileClassName={getTIleClassName}
       tileContent={getTileContent}
       showDoubleView={false}
       minDetail={'year'}

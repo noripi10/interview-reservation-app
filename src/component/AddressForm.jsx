@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const targetList = ['1', '2', '4', '10', '16', '22', '26'];
+const targetList = ['1', '2', '3', '4', '10', '16', '22', '26'];
 
 export default function AddressForm() {
   const classes = useStyles();
@@ -44,13 +44,10 @@ export default function AddressForm() {
 
   return (
     <>
-      <Typography gutterBottom>・カレンダーから日付を選択して下さい</Typography>
+      <Typography gutterBottom>・日付と空き時間を選択して下さい</Typography>
       <div style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
         <Calendar targetList={targetList} />
-        <span style={{ fontFamily: 'sans-serif', marginLeft: 10 }}>
-          ○：空き
-          <br />
-        </span>
+        {/* <ReservableList /> */}
       </div>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
