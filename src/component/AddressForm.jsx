@@ -3,28 +3,16 @@ import Grid from '@material-ui/core/Grid';
 import {
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
+  // FormControl,
+  // InputLabel,
+  // Select,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import { useRecoilState } from 'recoil';
 import { inputState } from '../store/store';
-import { Calendar } from './Calendar';
-
-moment.locale('ja', {
-  weekdays: [
-    '日曜日',
-    '月曜日',
-    '火曜日',
-    '水曜日',
-    '木曜日',
-    '金曜日',
-    '土曜日',
-  ],
-  weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
-});
+// import { Calendar } from './Calendar';
+import { FCalendar } from './FullCalendar';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -34,9 +22,12 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     // marginTop: theme.spacing(2),
   },
+  calendarComponent: {
+    marginBottom: 15,
+  },
 }));
 
-const targetList = ['1', '2', '3', '4', '10', '16', '22', '26'];
+// const targetList = ['1', '2', '3', '4', '10', '16', '22', '26'];
 
 export default function AddressForm() {
   const classes = useStyles();
@@ -45,9 +36,19 @@ export default function AddressForm() {
   return (
     <>
       <Typography gutterBottom>・日付と空き時間を選択して下さい</Typography>
-      <div style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
+      {/* <div
+        style={{
+          marginBottom: 10,
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
         <Calendar targetList={targetList} />
-        {/* <ReservableList /> */}
+        <FCalendar />
+        <ReservableList />
+      </div> */}
+      <div className={classes.calendarComponent}>
+        <FCalendar />
       </div>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -70,7 +71,7 @@ export default function AddressForm() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl className={classes.formControl} fullWidth>
+          {/* <FormControl className={classes.formControl} fullWidth>
             <InputLabel htmlFor='time' color='secondary'>
               予約時間
             </InputLabel>
@@ -96,7 +97,18 @@ export default function AddressForm() {
               <option value={10}>10：00 - 11：00</option>
               <option value={10}>11：00 - 12：00</option>
             </Select>
-          </FormControl>
+          </FormControl> */}
+
+          <TextField
+            required
+            id='reserveTime'
+            label='希望時間（カレンダーより選択）'
+            fullWidth
+            color='secondary'
+            disabled
+            inputProps={{ 'aria-readonly': true }}
+            value={inputItem.timeLabel ? inputItem.timeLabel : '未選択'}
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField

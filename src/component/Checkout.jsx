@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import {
+  makeStyles,
+  withStyles,
+  CssBaseline,
+  AppBar,
+  Button,
+  Toolbar,
+  Paper,
+  Stepper,
+  Step,
+  StepLabel,
+  Link,
+  Typography,
+  useScrollTrigger,
+} from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Confirm from './Confirm';
 
+import events_sample from '../events_sample.json';
+
+import { useRecoilState } from 'recoil';
+import { eventState } from '../store/store';
+
 const baseColor = '#D0101B';
+
+const CalendarStyle = withStyles({
+  active: {
+    color: '#fff',
+    backgroundColor: baseColor,
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -29,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
+      width: 800,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -49,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
     justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   button: {
     marginTop: theme.spacing(3),
@@ -138,7 +154,12 @@ ElevationScroll.propTypes = {
 
 export default function Checkout(props) {
   const classes = useStyles();
+  const [event, setEvent] = useRecoilState(eventState);
   const [activeStep, setActiveStep] = React.useState(0);
+
+  useEffect(() => {
+    setEvent(events_sample.events);
+  }, []);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -167,7 +188,7 @@ export default function Checkout(props) {
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
-              <Step key={label} className={classes.step}>
+              <Step key={label}>
                 <StepLabel StepIconComponent={stepIconComponent}>
                   {label}
                 </StepLabel>
@@ -199,6 +220,9 @@ export default function Checkout(props) {
                   >
                     {activeStep === steps.length - 1 ? '送信' : '次へ'}
                   </Button>
+                </div>
+                <div style={{ marginTop: 8, textAlign: 'right', fontSize: 8 }}>
+                  ブラウザの戻るボタンは使用しないでください
                 </div>
               </>
             )}
