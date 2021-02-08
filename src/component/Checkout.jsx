@@ -191,9 +191,10 @@ export default function Checkout(props) {
                     </Button>
                   )}
                   <Button
+                    type='submit'
                     variant='contained'
                     style={{ backgroundColor: '#D0111B', color: '#fff' }}
-                    onClick={handleNext}
+                    onClick={() => handleNext()}
                     className={classes.button}
                   >
                     {activeStep === steps.length - 1 ? '送信' : '次へ'}

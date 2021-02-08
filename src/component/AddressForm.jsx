@@ -106,7 +106,7 @@ export default function AddressForm() {
             label='氏名'
             fullWidth
             color='secondary'
-            value={inputItem.lastName}
+            value={inputItem.name}
             onChange={(e) => {
               console.log(e.target.value);
               setInputItem((item) => ({ ...item, name: e.target.value }));
@@ -121,7 +121,7 @@ export default function AddressForm() {
             label='ひらがな'
             fullWidth
             color='secondary'
-            value={inputItem.firstName}
+            value={inputItem.kanaName}
             onChange={(e) =>
               setInputItem((item) => ({ ...item, kanaName: e.target.value }))
             }
@@ -135,7 +135,7 @@ export default function AddressForm() {
             label='メールアドレス'
             fullWidth
             color='secondary'
-            value={inputItem.address}
+            value={inputItem.mailAddress}
             onChange={(e) =>
               setInputItem((item) => ({ ...item, mailAddress: e.target.value }))
             }

@@ -9,7 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { inputState } from '../store/store';
 import { Divider } from '@material-ui/core';
 
-const products = [
+const inputList = [
   { name: '希望日', desc: '', value: 'date' },
   { name: '希望時間', desc: '', value: 'timeLabel' },
   { name: '氏名', desc: '', value: 'name' },
@@ -40,13 +40,11 @@ export default function Review() {
         Order summary
       </Typography> */}
       <List disablePadding>
-        {products.map((product) => (
-          <React.Fragment key={product.name}>
-            <ListItem className={classes.listItem} key={product.name}>
-              <ListItemText primary={product.name} secondary={''} />
-              <Typography variant='body2'>
-                {inputItem[product.value]}
-              </Typography>
+        {inputList.map((input) => (
+          <React.Fragment key={input.name}>
+            <ListItem className={classes.listItem} key={input.name}>
+              <ListItemText primary={input.name} secondary={''} />
+              <Typography variant='body2'>{inputItem[input.value]}</Typography>
             </ListItem>
             <Divider />
           </React.Fragment>
