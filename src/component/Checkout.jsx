@@ -221,7 +221,7 @@ export default function Checkout(props) {
                     {activeStep === steps.length - 1 ? '送信' : '次へ'}
                   </Button>
                 </div>
-                <div style={{ marginTop: 8, textAlign: 'right', fontSize: 8 }}>
+                <div style={{ marginTop: 8, textAlign: 'right', fontSize: 10 }}>
                   ブラウザの戻るボタンは使用しないでください
                 </div>
               </>

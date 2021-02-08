@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { inputState, eventState } from '../store/store';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 export const FCalendar = React.memo(() => {
   const classes = useStyles();
-  const event = useRecoilValue(eventState);
+  const [events, setEvents] = useRecoilState(eventState);
   const setInputItem = useSetRecoilState(inputState);
 
   const handleEventClick = ({ event }) => {
-    // console.log(event.id);
     const { start, end } = event;
+
     setInputItem((item) => ({
       ...item,
       id: event.id,
@@ -32,6 +32,15 @@ export const FCalendar = React.memo(() => {
       timeLabel:
         moment(start).format('HH:mm') + '~' + moment(end).format('HH:mm'),
     }));
+
+    const newEvents = events.map((v) => {
+      if (v.id === Number(event.id)) {
+        return { ...v, color: '#e97878' };
+      } else {
+        return { ...v, color: '#9b5151' };
+      }
+    });
+    setEvents(newEvents);
   };
 
   return (
@@ -50,14 +59,15 @@ export const FCalendar = React.memo(() => {
           today: '本日',
         }}
         initialView='timeGridWeek'
-        allDayContent={undefined}
+        allDaySlot={false}
         businessHours={{
           startTime: '8:00',
           endTime: '20:00',
         }}
         editable={true}
         selectable={true}
-        events={event}
+        events={events}
+        eventColor='#9b5151'
         eventClick={handleEventClick}
       />
     </div>
