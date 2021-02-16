@@ -23,8 +23,10 @@ import Confirm from './Confirm';
 
 import events_sample from '../events_sample.json';
 
-import { useRecoilState } from 'recoil';
-import { eventState } from '../store/store';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { eventState, inputState } from '../store/store';
+
+import { addData } from '../util/firebase';
 
 const baseColor = '#D0101B';
 
@@ -154,14 +156,19 @@ ElevationScroll.propTypes = {
 
 export default function Checkout(props) {
   const classes = useStyles();
-  const [event, setEvent] = useRecoilState(eventState);
+  const inputs = useRecoilValue(inputState);
+  const setEvent = useSetRecoilState(eventState);
   const [activeStep, setActiveStep] = React.useState(0);
 
   useEffect(() => {
     setEvent(events_sample.events);
   }, []);
 
-  const handleNext = () => {
+  const handleNext = async (send) => {
+    // 送信ボタンでfirebaseにデータ登録
+    if (send) {
+      await addData(inputs);
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -215,7 +222,7 @@ export default function Checkout(props) {
                     type='submit'
                     variant='contained'
                     style={{ backgroundColor: '#D0111B', color: '#fff' }}
-                    onClick={() => handleNext()}
+                    onClick={() => handleNext(activeStep === steps.length - 1)}
                     className={classes.button}
                   >
                     {activeStep === steps.length - 1 ? '送信' : '次へ'}
