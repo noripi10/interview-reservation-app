@@ -1,75 +1,86 @@
 import React from 'react';
-import FullCalendar, { Calendar } from '@fullcalendar/react';
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { makeStyles } from '@material-ui/core';
+// import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { inputState, eventState } from '../store/store';
 
-const useStyles = makeStyles((theme) => ({
-  calendar: {
-    backgroundColor: '#fff',
-    width: '300px',
-    height: '300px',
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+// 	calendar: {
+// 		backgroundColor: '#fff',
+// 		width: '300px',
+// 		height: '300px',
+// 	},
+// }));
 
 export const FCalendar = React.memo(() => {
-  const classes = useStyles();
-  const [events, setEvents] = useRecoilState(eventState);
-  const setInputItem = useSetRecoilState(inputState);
+	// const classes = useStyles();
+	const [events, setEvents] = useRecoilState(eventState);
+	const setInputItem = useSetRecoilState(inputState);
 
-  const handleEventClick = ({ event }) => {
-    const { start, end } = event;
+	const createEventContent = (e) => {
+		const { remaining } = e.event.extendedProps;
+		return (
+			<span>
+				<div>{e.timeText}</div>
+				<div>{`残 ${remaining} 枠`}</div>
+			</span>
+		);
+	};
 
-    setInputItem((item) => ({
-      ...item,
-      id: event.id,
-      date: moment(start).format('YYYY/MM/DD (ddd)'),
-      time: moment(start).format('hh:mm'),
-      timeLabel:
-        moment(start).format('HH:mm') + '~' + moment(end).format('HH:mm'),
-    }));
+	const handleEventClick = ({ event }) => {
+		const { start, end } = event;
 
-    const newEvents = events.map((v) => {
-      if (v.id === Number(event.id)) {
-        return { ...v, color: '#e97878' };
-      } else {
-        return { ...v, color: '#9b5151' };
-      }
-    });
-    setEvents(newEvents);
-  };
+		setInputItem((item) => ({
+			...item,
+			id: event.id,
+			date: moment(start).format('YYYY/MM/DD (ddd)'),
+			time: moment(start).format('HH:mm'),
+			timeLabel:
+				moment(start).format('HH:mm') + '~' + moment(end).format('HH:mm'),
+		}));
 
-  return (
-    <div style={{ background: '#fff' }}>
-      <FullCalendar
-        locale='ja-JP'
-        timeZone='local'
-        themeSystem='bootstrap'
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          start: 'title',
-          center: '',
-          end: 'today prev,next',
-        }}
-        buttonText={{
-          today: '本日',
-        }}
-        initialView='timeGridWeek'
-        allDaySlot={false}
-        businessHours={{
-          startTime: '8:00',
-          endTime: '20:00',
-        }}
-        editable={true}
-        selectable={true}
-        events={events}
-        eventColor='#9b5151'
-        eventClick={handleEventClick}
-      />
-    </div>
-  );
+		const newEvents = events.map((v) => {
+			if (v.id === event.id) {
+				return { ...v, color: '#e97878' };
+			} else {
+				return { ...v, color: '#9b5151' };
+			}
+		});
+		setEvents(newEvents);
+	};
+
+	return (
+		<div style={{ background: '#fff' }}>
+			<FullCalendar
+				locale="ja-JP"
+				timeZone="local"
+				themeSystem="bootstrap"
+				plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+				headerToolbar={{
+					start: 'title',
+					center: '',
+					end: 'today prev,next',
+				}}
+				buttonText={{
+					today: '本日',
+				}}
+				initialView="timeGridWeek"
+				allDaySlot={false}
+				businessHours={{
+					startTime: '8:00',
+					endTime: '20:00',
+				}}
+				editable={true}
+				selectable={true}
+				events={events}
+				eventColor="#9b5151"
+				eventContent={(e) => createEventContent(e)}
+				eventClick={handleEventClick}
+			/>
+		</div>
+	);
 });
