@@ -20,6 +20,7 @@ import { CheckCircle } from '@material-ui/icons';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Confirm from './Confirm';
+import Copyright from './Copyright';
 
 // import events_sample from '../events_sample.json';
 
@@ -73,19 +74,6 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: theme.spacing(1),
 	},
 }));
-
-const Copyright = () => {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="">
-				your site
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-};
 
 const steps = ['予約内容入力', '入力内容確認'];
 
