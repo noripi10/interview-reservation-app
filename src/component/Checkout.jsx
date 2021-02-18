@@ -157,9 +157,11 @@ export default function Checkout(props) {
     }
     // リアルタイムアップデート
     db.collection('schedule').onSnapshot((snapshot) => {
-      const currentSchedule = snapshot.docs.map((doc) => {
-        return doc.data();
-      });
+      const currentSchedule = snapshot.docs
+        .map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        })
+        .filter((v) => v.remaining !== 0);
       setEvent(currentSchedule);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -185,9 +187,8 @@ export default function Checkout(props) {
             setInputs({});
             setActiveStep(0);
           } else {
-            // setInputs({});
-            // setActiveStep(0);
-            // window.location.reload(false);
+            setActiveStep(activeStep + 1);
+            setInputs({});
           }
         }
       });
